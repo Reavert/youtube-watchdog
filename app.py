@@ -11,7 +11,7 @@ def main():
 	parser = argparse.ArgumentParser(description='Tracking uploading new videos on YouTube and notifing in specific discord channel via webhooks')
 	parser.add_argument('-n', '--name', help='Discord bot name displayed in channel')
 	parser.add_argument('-i', '--icon', help='Url to bot\'s avatar icon')
-	parser.add_argument('-t', '--search-interval', help='Time in seconds for searching query')
+	parser.add_argument('-t', '--search-interval', help='Time in seconds for searching query', type=int)
 	parser.add_argument('-q', '--query', help='Query string to tracking')
 	parser.add_argument('-u', '--webhook-url', help='Discord bot\'s webhook url')
 	parser.add_argument('-f', '--config-file', help='Path to config file')
@@ -24,11 +24,13 @@ def main():
 		print(f'Custom config \'{arguments.config_file}\' sucessfully loaded!')
 	else:
 		config = BotConfig(default_file=DEFAULT_FILE_NAME)
-		if arguments.name: config.bot_name = arguments.name
-		if arguments.icon: config.avatar_url = arguments.icon
-		if arguments.search_interval: config.search_interval = arguments.search_interval
-		if arguments.query: config.query = arguments.query
-		if arguments.webhook_url: config.webhook_url = arguments.webhook_url
+		print(f'Default config \'{DEFAULT_FILE_NAME}\' sucessfully loaded!')
+
+	if arguments.name: config.bot_name = arguments.name
+	if arguments.icon: config.avatar_url = arguments.icon
+	if arguments.search_interval: config.search_interval = arguments.search_interval
+	if arguments.query: config.query = arguments.query
+	if arguments.webhook_url: config.webhook_url = arguments.webhook_url
 	print(f'Info: {config}')
 
 	webhook_bot = WebhookBot(
