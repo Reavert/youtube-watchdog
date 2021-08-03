@@ -38,8 +38,8 @@ def main():
 		username = config.bot_name,
 		avatar_url = config.avatar_url
 		)
-	
-	last_video_id = video_search.result()['result'][0]['id']
+
+	last_video_id = ''
 	while True:
 		video_search = CustomSearch(config.query, VideoSortOrder.uploadDate, limit = 1)
 		search_result = video_search.result()['result'][0]
@@ -48,11 +48,12 @@ def main():
 		link = search_result['link']
 
 		if last_video_id != video_id:
-			print(f'Detected new video by \'{config.query}\' query: \n{link}')
-			webhook_bot.send_message(f'Detected new video by \'{config.query}\' query: \n{link}')
-			last_video_id = video_id
+			if last_video_id:
+				print(f'Detected new video by \'{config.query}\' query: {link}')
+				webhook_bot.send_message(f'Detected new video by \'{config.query}\' query: \n{link}')
 		else:
 			print("No new video detected.")
+		last_video_id = video_id
 		time.sleep(config.search_interval)
 
 if __name__ == '__main__':
