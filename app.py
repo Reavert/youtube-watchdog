@@ -39,9 +39,9 @@ def main():
 		avatar_url = config.avatar_url
 		)
 	
-	video_search = CustomSearch(config.query, VideoSortOrder.uploadDate, limit = 1)
 	last_video_id = video_search.result()['result'][0]['id']
 	while True:
+		video_search = CustomSearch(config.query, VideoSortOrder.uploadDate, limit = 1)
 		search_result = video_search.result()['result'][0]
 
 		video_id = search_result['id']
