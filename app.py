@@ -46,14 +46,15 @@ def main():
 
 		timestamp = time.strftime('%H:%M:%S', time.localtime())
 		video_id = search_result['id']
-		link = search_result['link']
+		video_title = search_result['title']
+		video_link = search_result['link']
 
 		if last_video_id != video_id:
 			if last_video_id:
-				print(f'[{timestamp}]: Detected new video by \'{config.query}\' query: {link}')
-				webhook_bot.send_message(f'Detected new video by \'{config.query}\' query: \n{link}')
+				print(f'[{timestamp}]: A new video was found for the query \'{config.query}\': \'{video_title}\' ({video_link})')
+				webhook_bot.send_message(f'Detected new video by \'{config.query}\' query: \n{video_link}')
 		else:
-			print(f'[{timestamp}]: No new video detected.')
+			print(f'[{timestamp}]: No new videos were found for the query \'{config.query}\'. Latest video: \'{video_title}\' ({video_link})')
 		last_video_id = video_id
 		time.sleep(config.search_interval)
 
