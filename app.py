@@ -44,15 +44,16 @@ def main():
 		video_search = CustomSearch(config.query, VideoSortOrder.uploadDate, limit = 1)
 		search_result = video_search.result()['result'][0]
 
+		timestamp = time.strftime('%H:%M:%S', time.localtime())
 		video_id = search_result['id']
 		link = search_result['link']
 
 		if last_video_id != video_id:
 			if last_video_id:
-				print(f'Detected new video by \'{config.query}\' query: {link}')
+				print(f'[{timestamp}]: Detected new video by \'{config.query}\' query: {link}')
 				webhook_bot.send_message(f'Detected new video by \'{config.query}\' query: \n{link}')
 		else:
-			print("No new video detected.")
+			print(f'[{timestamp}]: No new video detected.')
 		last_video_id = video_id
 		time.sleep(config.search_interval)
 
