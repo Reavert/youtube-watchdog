@@ -1,6 +1,7 @@
 from .monitor import Monitor
 from youtubesearchpython import CustomSearch, VideoSortOrder
 
+
 class YoutubeSearchMonitor(Monitor):
 	"""Monitor class using youtube-search-python module"""
 	def refresh(self, query=''):
