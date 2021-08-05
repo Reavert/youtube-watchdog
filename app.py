@@ -1,13 +1,28 @@
-from youtubesearchpython import CustomSearch, VideoSortOrder
 import time
 import argparse
 from configs.bot_config import BotConfig
 from webhook_bot import WebhookBot
+from monitors.youtube_search_monitor import YoutubeSearchMonitor
 
 
 DEFAULT_FILE_NAME = 'default.json'
-	
+
+global webhook_bot
+
+def on_detection(sender, video_info: dict):
+	global webhook_bot
+
+	timestamp = time.strftime('%H:%M:%S', time.localtime())
+
+	video_title = video_info['title']
+	video_link = video_info['link']
+
+	print(f'[{timestamp}]: A new video was found for the query \'{sender.query}\': \'{video_title}\' ({video_link})')
+	webhook_bot.send_message(f'A new video was found for the query \'{sender.query}\'\n{video_title}\n{video_link}')
+
 def main():
+	global webhook_bot
+
 	parser = argparse.ArgumentParser(description='Tracking uploading new videos on YouTube and notifing in specific discord channel via webhooks')
 	parser.add_argument('-n', '--name', help='Discord bot name displayed in channel')
 	parser.add_argument('-i', '--icon', help='Url to bot\'s avatar icon')
@@ -39,23 +54,9 @@ def main():
 		avatar_url = config.avatar_url
 		)
 
-	last_video_id = ''
+	monitor = YoutubeSearchMonitor(query=config.query, on_detect=on_detection)
 	while True:
-		video_search = CustomSearch(config.query, VideoSortOrder.uploadDate, limit = 1)
-		search_result = video_search.result()['result'][0]
-
-		timestamp = time.strftime('%H:%M:%S', time.localtime())
-		video_id = search_result['id']
-		video_title = search_result['title']
-		video_link = search_result['link']
-
-		if last_video_id != video_id:
-			if last_video_id:
-				print(f'[{timestamp}]: A new video was found for the query \'{config.query}\': \'{video_title}\' ({video_link})')
-				webhook_bot.send_message(f'Detected new video by \'{config.query}\' query: \n{video_link}')
-		else:
-			print(f'[{timestamp}]: No new videos were found for the query \'{config.query}\'. Latest video: \'{video_title}\' ({video_link})')
-		last_video_id = video_id
+		monitor.run()
 		time.sleep(config.search_interval)
 
 if __name__ == '__main__':
