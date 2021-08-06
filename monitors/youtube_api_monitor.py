@@ -23,10 +23,13 @@ class YoutubeAPIMonitor(Monitor):
 		search_response = self._youtube.search().list(
 		    q=self.query,
 		    part='id,snippet',
+		    order='date',
+		    type='video',
 		    maxResults=1
 		  ).execute()
 		search_result = search_response.get('items', [])[0]
 
+		print(search_response)
 		self.video_id = search_result['id']['videoId']
 		self.video_title = search_result['snippet']['title']
 		self.video_link = f'https://www.youtube.com/watch?v={self.video_id}'
