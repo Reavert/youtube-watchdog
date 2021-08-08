@@ -3,5 +3,6 @@
 	"avatar_url": "https://i.imgur.com/FwUCnbF.png",
 	"search_interval": 600,
 	"query": "Music",
-	"webhook_url": ""
+	"webhook_url": "",
+	"api_key": ""
 }

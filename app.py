@@ -7,7 +7,6 @@ from monitors.youtube_api_factory import YoutubeAPIFactory
 
 
 DEFAULT_FILE_NAME = 'default.json'
-DEVELOPER_KEY = 'KEY'
 
 global webhook_bot
 
@@ -35,6 +34,7 @@ def main():
     parser.add_argument('-q', '--query', help='Query string to tracking')
     parser.add_argument('-u', '--webhook-url', help='Discord bot\'s webhook url')
     parser.add_argument('-f', '--config-file', help='Path to config file')
+    parser.add_argument('-a', '--api-key', help='Optional API-key for using YouTube API')
 
     arguments = parser.parse_args()
 
@@ -55,6 +55,8 @@ def main():
         config.query = arguments.query
     if arguments.webhook_url:
         config.webhook_url = arguments.webhook_url
+    if arguments.api_key:
+        config.api_key = arguments.api_key
     print(f'Info: {config}')
 
     webhook_bot = WebhookBot(
@@ -62,7 +64,12 @@ def main():
         username=config.bot_name,
         avatar_url=config.avatar_url
     )
-    factory = YoutubeSearchFactory(query=config.query, on_detect=on_detection)
+    if config.api_key:
+        factory = YoutubeAPIFactory(query=config.query, on_detect=on_detection, api_key=config.api_key)
+        print('YouTube API search is used')
+    else:
+        factory = YoutubeSearchFactory(query=config.query, on_detect=on_detection)
+        print('Default search is used')
     monitor = factory.get_monitor()
     while True:
         monitor.run()
