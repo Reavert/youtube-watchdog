@@ -3,13 +3,14 @@ from youtubesearchpython import CustomSearch, VideoSortOrder
 
 
 class YoutubeSearchMonitor(Monitor):
-	"""Monitor class using youtube-search-python module"""
-	def refresh(self, query=''):
-		super().refresh(query)
+    """Monitor class using youtube-search-python module"""
 
-		video_search = CustomSearch(self.query, VideoSortOrder.uploadDate, limit = 1)
-		search_result = video_search.result()['result'][0]
+    def refresh(self, query=''):
+        super().refresh(query)
 
-		self.video_id = search_result['id']
-		self.video_title = search_result['title']
-		self.video_link = search_result['link']
+        video_search = CustomSearch(self.query, VideoSortOrder.uploadDate, limit=1)
+        search_result = video_search.result()['result'][0]
+
+        self.video_id = search_result['id']
+        self.video_title = search_result['title']
+        self.video_link = search_result['link']
