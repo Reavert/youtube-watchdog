@@ -13,8 +13,17 @@ python app.py
 ## Parameters
 By default `app.py` takes the configuration information from the `default.json` file.
 
-You can copy this file and set the custom bot config _(use -f parameter to set custom config file)_.
-
+You can copy this file and set the custom bot config or use following structure _(use -f parameter to set custom config file)_.
+```json
+{
+	"bot_name": "Your Bot Name",
+	"avatar_url": "https://your.avatar.url.com/amazing_avatar.png",
+	"search_interval": 600,
+	"query": "Music",
+	"webhook_url": "https://discord.com/api/webhooks/channel/webhook_url",
+	"api_key": ""
+}
+```
 Also, you can set the config parameters from the command line:
 - **-n, --name:** _Discord bot name displayed in channel_
 - **-i, --icon:** _Url to bot's avatar icon_
