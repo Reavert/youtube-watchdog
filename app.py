@@ -34,7 +34,7 @@ def main():
     parser.add_argument('-q', '--query', help='Query string to tracking')
     parser.add_argument('-u', '--webhook-url', help='Discord bot\'s webhook url')
     parser.add_argument('-f', '--config-file', help='Path to config file')
-    parser.add_argument('-a', '--api-key', help='Optional API-key for using YouTube API')
+    parser.add_argument('-a', '--api-key', help='Optional developer API-key for using YouTube Data API v3')
 
     arguments = parser.parse_args()
 
