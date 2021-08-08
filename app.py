@@ -2,7 +2,9 @@ import time
 import argparse
 from configs.bot_config import BotConfig
 from webhook_bot import WebhookBot
-from monitors.youtube_search_monitor import YoutubeSearchMonitor
+from monitors.youtube_search_factory import YoutubeSearchFactory
+from monitors.youtube_api_factory import YoutubeAPIFactory
+
 
 DEFAULT_FILE_NAME = 'default.json'
 DEVELOPER_KEY = 'KEY'
@@ -60,8 +62,8 @@ def main():
         username=config.bot_name,
         avatar_url=config.avatar_url
     )
-
-    monitor = YoutubeSearchMonitor(query=config.query, on_detect=on_detection)
+    factory = YoutubeSearchFactory(query=config.query, on_detect=on_detection)
+    monitor = factory.get_monitor()
     while True:
         monitor.run()
         time.sleep(config.search_interval)
